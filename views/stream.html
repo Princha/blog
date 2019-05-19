@@ -1,0 +1,237 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <!-- <meta http-equiv="Content-Type" content="text/html; charset=UTF-8"> -->
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge;IE=8;IE=9;IE=10;IE=11;" />
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title><%= lang.stream_title %></title>
+    <link rel="stylesheet" type="text/css" href="/statics/css/bootstrap.min.css">
+    <link rel="stylesheet" type="text/css" href="/statics/css/bootstrap-table.min.css">
+    <link rel="stylesheet" type="text/css" href="/statics/css/bootstrap-switch.min.css">
+    <link rel="stylesheet" type="text/css" href="/statics/css/bootstrap-validator.min.css">
+    <link rel="stylesheet" type="text/css" href="/statics/css/font-awesome.min.css">
+    <link rel="stylesheet" type="text/css" href="/statics/css/bootstrap-theme.min.css">
+    <!-- <link rel="stylesheet" type="text/css" href="../css/style.css">        -->
+    <script type="text/javascript" src="./js/base-loading.js"></script>
+    <style>
+        a {
+            cursor: pointer;
+        }
+
+        #Table tr td {
+            white-space: nowrap;
+            /* cursor: hand; */
+            /* -webkit-user-select: none;
+            -moz-user-select: none;
+            -ms-user-select: none; */
+        }
+
+        #dialog {
+            position: fixed;
+            background: rgba(255, 255, 255, 0.8);
+            top: 0px;
+            bottom: 0px;
+            left: 0px;
+            right: 0px;
+            *padding: 64px;
+        }
+
+        #dialog-label {
+            -webkit-user-select: none;
+            -moz-user-select: none;
+            -ms-user-select: none;
+        }
+
+        .serviceStateOn {
+            width: 10px;
+            height: 10px;
+            color: #32CD32;
+            /* margin: 0 auto;  */
+            /* background-color: #1E90FF */
+        }
+
+        .serviceStateRed {
+            width: 10px;
+            height: 10px;
+            /* margin: 0 auto;  */
+            /* background-color: #ff0000 */
+        }
+
+        .serviceStateOff {
+            width: 10px;
+            height: 10px;
+            color: #ff0000;
+            /* margin: 0 auto;  */
+            /* background-color: #222222 */
+        }
+
+        .onlineTipsOnline {
+            background-color: #ffffff
+        }
+
+        .onlineTipsOffline {
+            background-color: #fa8072
+        }
+
+        #dialog-inner {
+            background: #FFF;
+            border: 1px solid #CCC;
+            width: 600px;
+            height: 100%;
+            margin: 0px auto;
+            box-shadow: 5px 5px 5px #CCC;
+        }
+
+        .dialog-body-cpu-chart {
+            width: 100%;
+            padding-top: 10px;
+            /* padding-bottom: 10px; */
+            padding-left: calc(50% - 250px);
+        }
+
+        .dialog-body-mem-chart {
+            width: 100%;
+            padding-top: 10px;
+            /* padding-bottom: 10px; */
+            padding-left: calc(50% - 250px);
+        }
+
+        .dialog-button {
+            padding-bottom: 20px;
+            padding-left: calc(50% - 90px);
+        }
+
+        .statistics {
+            font-size: 16px;
+            color: rgba(150, 150, 150, 0.8);
+        }
+    </style>
+</head>
+
+<body>
+    <nav class="navbar navbar-default">
+        <div class="container-fluid">
+            <div class="navbar-header">
+                <span class="navbar-brand"><%= lang.stream_title %></span>
+            </div>
+        </div>
+    </nav>
+    <div style="padding-left:16px;width:99%;">
+        <div>
+            <!-- <h2 style="height:50px;"> -->
+                <!-- Data Stream &nbsp;&nbsp; -->
+                <!-- <button id="aggregation-button" class="btn btn-info"><%= lang.stream_title %></button> 
+                &nbsp;&nbsp; -->
+                <button class="btn btn-success" data-toggle="modal" data-target="#dialog"><i class="fa fa-plus"></i><%= lang.stream_add_button %></button>
+                &nbsp;&nbsp;
+                <div style="display:inline;float:right;">
+                    <input id="did-search-input" class="form-control" style="width:120px;display:inline;vertical-align:middle;" type="text" placeholder="<%= lang.stream_search_did_input_placeholder %>"/>
+                    <input id="sname-search-input" class="form-control" style="width:120px;display:inline;vertical-align:middle;" type="text" placeholder="<%= lang.stream_search_sname_input_placeholder %>"/>
+                    <select id="search-time-select" class="form-control" name="target" style="width:65px;display:inline;vertical-align:middle;">
+                        <option value="1h">1h</option>
+                        <option value="6h">6h</option>
+                        <option value="1d">1d</option>
+                        <option value="7d">7d</option>
+                    </select>
+                    <button id="search-button" class="btn btn-primary"><%= lang.stream_search_search_button %></button>
+                    &nbsp;
+                </div>
+            <!-- </h2> -->
+        </div>
+        <div id="myTabContent" class="tab-content" style="margin-top:-70px;">
+            <div id="frame">
+                <div id="list-view">
+                    <div style="float:right;margin-top:10px;">
+                        <!-- <div style="float:left;margin-top:9px;display:inline;">&nbsp;&nbsp;<i style="font-size:15px;font-style:normal;font-weight:bold;">Refresh:</i>&nbsp;</div> -->
+                        <!-- <input style="outline: none;-webkit-tap-highlight-color: rgba(0,0,0,0);" class="mui-switch mui-switch-anim" type="checkbox" checked> -->
+                        &nbsp;
+                        <!-- <input id="auto-refresh-switch" type="checkbox" checked /> -->
+                    </div>
+                    <table id="Table"></table>
+                </div>
+            </div>
+        </div>
+        <div class="modal fade" id="dialog" tabindex="-1" role="dialog" aria-labelledby="dialog-label" aria-hidden="true">
+            <div class="modal-dialog">
+                <div class="modal-content" style="width:600px;">
+                    <div class="modal-header">
+                        <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
+                        <h4 class="modal-title" id="dialog-label"><%= lang.stream_add_modal_title %></h4>
+                    </div>
+                    <div class="modal-body" style="margin: 0px auto;">
+                        <form id="stream-add-form" class="form-horizontal" onsubmit="return false">
+                            <div class="form-group">
+                                <label class="col-sm-3 control-label"><%= lang.stream_add_modal_form_did_label %></label>
+                                <div class="col-xs-8 col-md-8 col-sm-8">
+                                    <input id="add-did-input" name="add_did_input" type="text" class="form-control" placeholder="<%= lang.stream_add_modal_form_did_input_placeholder %>">
+                                </div>
+                            </div>
+                            <div class="form-group">
+                                <label class="col-sm-3 control-label"><%= lang.stream_add_modal_form_sname_label %></label>
+                                <div class="col-xs-8 col-md-8 col-sm-8">
+                                    <input id="add-sname-input" name="add_sname_input" type="text" class="form-control" placeholder="<%= lang.stream_add_modal_form_sname_input_placeholder %>">
+                                </div>
+                            </div>
+                            <div class="form-group">
+                                <label class="col-sm-3 control-label"><%= lang.stream_add_modal_form_stream_label %></label>
+                                <div class="col-xs-8 col-md-8 col-sm-8">
+                                    <input id="add-stream-input" name="add_stream_input" type="text" class="form-control" placeholder="<%= lang.stream_add_modal_form_stream_input_placeholder %>">
+                                </div>
+                            </div> 
+                            <!-- <div class="form-group">
+                                <label class="col-sm-3 control-label"><%= lang.stream_add_modal_form_timestamp_label %></label>
+                                <div class="col-xs-8 col-md-8 col-sm-8">
+                                    <input id="add-stream-input" name="add_stream_input" type="datetime-local" class="form-control" placeholder="<%= lang.stream_add_modal_form_timestamp_input_placeholder %>">
+                                </div>
+                            </div> -->
+                        </form>
+                    </div>
+                    <div class="modal-footer">
+                        <!-- <div id="dialog-button" class="dialog-button"> -->
+                            <button type="button" class="btn btn-default" data-dismiss="modal"><%= lang.stream_add_modal_close_button %></button>
+                            <button id="add-button" type="button" class="btn btn-primary" data-toggle="modal"><%= lang.stream_add_modal_submit_button %></button>
+                        <!-- </div> -->
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="modal fade" id="action-dialog" tabindex="-1" role="dialog" aria-labelledby="dialog-label" aria-hidden="true">
+            <div class="modal-dialog">
+                <div class="modal-content" style="width:800px;">
+                    <div class="modal-header">
+                        <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
+                        <h4 class="modal-title" id="dialog-label"></h4>
+                    </div>
+                    <div id="action-dialog-body" class="dialog-body" style="margin: 0px auto;">
+
+                    </div>
+                    <div class="dialog-footer">
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <script>
+        language = {};
+        language.langlocale                     = "<%= lang.langlocale %>";
+        language.table_column_id                = "<%= lang.stream_table_column_id %>";
+        language.table_column_did               = "<%= lang.stream_table_column_did %>";
+        language.table_column_sname             = "<%= lang.stream_table_column_sname %>";
+        language.table_column_stream            = "<%= lang.stream_table_column_stream %>";
+        language.table_column_timestamp         = "<%= lang.stream_table_column_timestamp %>";
+        language.searchtime_span                = "<%= lang.stream_searchtime_span %>";
+    </script>
+    <script type="text/javascript" src="/statics/js/jquery.min.js"></script>
+    <script type="text/javascript" src="/statics/js/bootstrap.min.js"></script>
+    <script type="text/javascript" src="/statics/js/bootstrap-table.min.js"></script>
+    <script type="text/javascript" src="/statics/js/bootstrap-switch.min.js"></script>
+    <script type="text/javascript" src="/statics/js/bootstrap-table-editable.min.js"></script>
+    <script type="text/javascript" src="/statics/js/bootstrap-table-locale-all.min.js"></script>
+    <script type="text/javascript" src="/statics/js/bootstrap-validator.min.js"></script>
+    <script type="text/javascript" src="/statics/js/echarts.min.js"></script>
+    <script type="text/javascript" src="./js/stream.js?v=3"></script>
+</body>
+
+</html>

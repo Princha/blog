@@ -1,0 +1,168 @@
+<html>
+<head>
+    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge;IE=8;IE=9;IE=10;IE=11;" />
+    <title><%= lang.contorl_title %></title>
+    <link rel="stylesheet" type="text/css" href="/statics/css/bootstrap.min.css">
+    <link rel="stylesheet" type="text/css" href="/statics/css/bootstrap-table.min.css">
+    <link rel="stylesheet" type="text/css" href="/statics/css/bootstrap-theme.min.css">
+    <link rel="stylesheet" type="text/css" href="/statics/css/font-awesome.min.css"> 
+
+    <!-- <link rel="stylesheet" type="text/css" href="./css/jquery-ui.min.css">
+    <link rel="stylesheet" type="text/css" href="./css/bootstrap.min.css">
+    <link rel="stylesheet" type="text/css" href="./css/bootstrap-table.min.css">
+    <link rel="stylesheet" type="text/css" href="./css/bootstrap-theme.min.css">
+    <link rel="stylesheet" type="text/css" href="./css/font-awesome.min.css">   -->
+
+     <!-- <link rel="stylesheet" type="text/css" href="./css/style.css">    -->
+    <script type="text/javascript" src="./js/base-loading.js"></script>
+    <style>
+        #tools {
+            margin-bottom: 16px;
+        }
+
+        #dialog {
+            position: fixed;
+            background: rgba(255, 255, 255, 0.8);
+            top: 0px;
+            bottom: 0px;
+            left: 0px;
+            right: 0px;
+            *padding: 64px;
+        }
+
+        #version {
+            font-size: 16px;
+            color: rgba(150, 150, 150, 0.8);
+            /*border: 2px solid rgb(81, 150, 180);*/
+        }
+
+        .config-dialog-body span {
+            min-width: 160px;
+            line-height: 44px;
+            display: inline-block;
+        }
+
+        .config-dialog-body button {
+            margin-top: 10px;
+            margin-bottom: 10px;
+        }
+    </style>
+</head>
+<body>
+    <nav class="navbar navbar-default">
+        <div class="container-fluid">
+            <div class="navbar-header">
+                <span class="navbar-brand"><%= lang.contorl_title %></span>
+            </div>
+        </div>
+    </nav>
+    <div id="myTabContent" class="tab-content" style="margin-top:-70px;"> 
+        <div id="frame">
+            <div id="list-view"> 
+                <table id="Table"></table>
+            </div>
+        </div>
+    </div>
+    <div class="modal fade" id="dialog" tabindex="-1" role="dialog" aria-labelledby="dialog-label" aria-hidden="true">
+        <div class="modal-dialog"  style="width:700px;">
+            <div class="modal-content" style="width:100%;">
+                <div class="modal-header">
+                    <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
+                    <h4 class="modal-title" id="dialog-label"><%= lang.control_upload_modal_title %></h4>
+                </div>
+                <div class="modal-body" style="margin: 0px auto;">
+                    <div id="button-' + k + '" class="collapse in" style="margin-top:5px;">
+                        <ul id="server-' + k + '-list-tab" class="nav nav-tabs">
+                            <li class="active" style="height:40px;">
+                                <div class="panel panel-info">
+                                    <div class="panel-heading">
+                                        <a href="#upload-pane" data-toggle="tab" onclick="page_panel_change_class(this)"><%= lang.control_modal_upload_title %></a>
+                                    </div>
+                                </div>
+                            </li>
+                            <li style="height:40px;">
+                                <div>
+                                    <div class="panel-heading">
+                                        <a href="#control-pane" data-toggle="tab" onclick="page_panel_change_class(this)"><%= lang.control_modal_control_title %></a>
+                                    </div>
+                                </div>
+                            </li>
+                        </ul>
+                        <div class="tab-content" style="margin-top:4px;">
+                            <div class="tab-pane fade in active" id="upload-pane">
+                                <div class="panel-body">
+                                    <form id="files" class="form-horizontal" role="form" method="post" enctype="multipart/form-data">
+                                        <!-- <div class="form-group" style="width:400px;">
+                                            <label for="select" class="col-sm-2 control-label" style="padding-top:10px;"><%= lang.control_upload_modal_title %>:</label>
+                                            <div class="col-sm-10">
+                                                <select id="select" class="form-control" name="target" style="width:150px" disabled="disabled"></select>
+                                            </div>
+                                        </div> -->
+                                        <div class="form-group" style="width:400px;">
+                                            <label for="version" class="col-sm-2 control-label" style="padding-top:10px;"><%= lang.control_upload_modal_form_version_label %>:</label>
+                                            <div class="col-sm-10">
+                                                <input id="version" type="text" class="form-control" placeholder="版本号" name="version" style="width:150px;">
+                                            </div>
+                                        </div>
+                                        <div class="form-group" style="width:400px">
+                                            <label for="avatar" class="col-sm-2 control-label" style="padding-top:10px;"><%= lang.control_upload_modal_form_file_label %>:</label>
+                                            <div class="col-sm-10" style="padding-top:4px;">
+                                                <input type="file" name="avatar" />
+                                            </div>
+                                        </div>
+                                    </form>
+                                    <center>
+                                        <button type="button" class="btn btn-primary" data-toggle="modal" value="Upload" onclick="upload()"><%= lang.control_upload_modal_form_upload_button %></button>
+                                    </center>
+                                </div>
+                            </div>
+                            <div class="tab-pane fade" id="control-pane">
+                                <div class="panel-body">
+                                    <center>
+                                        <button class="btn btn-primary" onclick="post_data('upgrade')"><%= lang.control_bulk_management_table_upgrade_button %></button>&nbsp;&nbsp;&nbsp;&nbsp;
+                                        <button class="btn btn-primary" onclick="post_data('restart')"><%= lang.control_bulk_management_table_restart_button %></button>&nbsp;&nbsp;&nbsp;&nbsp;
+                                        <button class="btn btn-primary" onclick="post_data('reboot')"><%= lang.control_bulk_management_table_reboot_button %></button>
+                                    </center>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <script>
+        var language = {};
+        language.langlocale                                 = '<%= lang.langlocale %>';
+        language.bulk_management_table_name                 = '<%= lang.control_bulk_management_table_name %>';
+        language.bulk_management_table_key                  = '<%= lang.control_bulk_management_table_key %>';
+        language.bulk_management_table_description          = '<%= lang.control_bulk_management_table_description %>';
+        language.bulk_management_table_control_and_download = '<%= lang.control_bulk_management_table_control_and_download %>';
+        language.bulk_management_table_model                = '<%= lang.control_bulk_management_table_model %>';
+        language.bulk_management_table_version              = '<%= lang.control_bulk_management_table_version %>';
+        language.bulk_management_table_firmwaresize         = '<%= lang.control_bulk_management_table_firmwaresize %>';
+        language.bulk_management_table_uploaddate           = '<%= lang.control_bulk_management_table_uploaddate %>';
+        language.bulk_management_table_uploadpatch          = '<%= lang.control_bulk_management_table_uploadpatch %>';
+        language.bulk_management_table_update               = '<%= lang.control_bulk_management_table_update %>';
+        language.bulk_management_table_uploadfirmware       = '<%= lang.control_bulk_management_table_uploadfirmware %>';
+        language.bulk_management_table_upgrade              = '<%= lang.control_bulk_management_table_upgrade %>';
+        language.bulk_management_table_restart              = '<%= lang.control_bulk_management_table_restart %>';
+        language.bulk_management_table_reboot               = '<%= lang.control_bulk_management_table_reboot %>';
+        language.bulk_management_table_download             = '<%= lang.control_bulk_management_table_download %>';
+    </script>
+    <script type="text/javascript" src="/statics/js/jquery.min.js"></script>
+    <script type="text/javascript" src="/statics/js/bootstrap.min.js"></script>
+    <script type="text/javascript" src="/statics/js/bootstrap-table.min.js"></script>   
+    <script type="text/javascript" src="/statics/js/bootstrap-table-locale-all.min.js"></script> 
+
+    <!-- <script type="text/javascript" src="./js/jquery.min.js"></script>
+    <script type="text/javascript" src="./js/jquery-ui.min.js"></script>
+    <script type="text/javascript" src="./js/bootstrap.min.js"></script>
+    <script type="text/javascript" src="./js/bootstrap-table.min.js"></script>   
+    <script type="text/javascript" src="./js/bootstrap-table-locale-all.min.js"></script> -->
+
+    <script type="text/javascript" src="./js/control.js"></script>
+</body>
+
+</html>

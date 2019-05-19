@@ -1,0 +1,179 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta http-equiv="mobile-agent" content="format=html5;"/>
+    <meta http-equiv="content-type" content="text/html; charset=utf-8" />
+    <meta name="viewport" content="initial-scale=1, maximum-scale=1, minimum-scale=1, user-scalable=no"/>
+    <title><%= lang.dhcp_title %></title>
+    <!-- <link rel="stylesheet" type="text/css" href="./css/bootstrap.min.css?v=123" /> -->
+    <link rel="stylesheet" type="text/css" href="/statics/css/bootstrap.min.css">
+    <link rel="stylesheet" type="text/css" href="/statics/css/bootstrap-theme.min.css">
+    <link rel="stylesheet" type="text/css" href="/statics/css/bootstrap-table.min.css">  
+    <!-- <link rel="stylesheet" type="text/css" href="./css/bootstrap-theme.min.css?v=123" /> -->
+    <!-- <link rel="stylesheet" type="text/css" href="./css/bootstrap-table.min.css?v=123" /> -->
+
+    <script type="text/javascript" src="/statics/js/jquery.min.js"></script>
+    <script type="text/javascript" src="/statics/js/tether.min.js"></script>
+    <script type="text/javascript" src="/statics/js/bootstrap.min.js"></script>
+    <script type="text/javascript" src="/statics/js/bootstrap-table.min.js"></script>
+    <script type="text/javascript" src="./js/base-loading.js"></script>
+    <style>
+        #list table { border-top: 1px solid #eee; }
+        #table-toolbar h3 { margin: 0 16px 0 0; padding: 0; line-height: 34px; }
+    </style>
+
+    <script type="text/javascript">
+        var language = {};
+        language.table_column_no = "<%= lang.dhcp_table_column_no %>";
+        language.table_column_ip = "<%= lang.dhcp_table_column_ip %>";
+        language.table_column_mac = "<%= lang.dhcp_table_column_mac %>";
+        language.table_column_hostname = "<%= lang.dhcp_table_column_hostname %>";
+        language.table_column_ends = "<%= lang.dhcp_table_column_ends %>";
+        language.table_column_vendor = "<%= lang.dhcp_table_column_vendor %>";
+        function show_table(list) {
+            if (!list || list.length < 1) {
+                return ''
+            }
+
+            var viewHeight = $(window).height()
+            var height = viewHeight - 86;
+
+            $('#table').bootstrapTable({
+                columns: [{
+                    field: 'id',
+                    sortable: true,
+                    order: "desc",
+                    title: language.table_column_no
+                }, {
+                    field: 'ip',
+                    sortable: true,
+                    order: "desc",
+                    title: language.table_column_ip
+                }, {
+                    field: 'mac',
+                    sortable: true,
+                    order: "desc",
+                    title: language.table_column_mac
+                }, {
+                    field: 'hostname',
+                    sortable: true,
+                    title: language.table_column_hostname
+                }, {
+                    field: 'ends',
+                    sortable: true,
+                    order: "desc",
+                    title: language.table_column_ends
+                }, {
+                    field: 'vendor',
+                    sortable: true,
+                    title: language.table_column_vendor
+                }],
+                data: list,
+                striped: true,
+                search: true,
+                showColumns: true,
+                height: height,
+                toolbar: "#table-toolbar",
+                searchAlign: 'right'
+            });
+        }
+
+        function parse_list(data) {
+            var tokens = data.split('\n')
+            //console.log(tokens)
+
+            var list = []
+            var item = null
+
+            var keys = {}
+            var index = 1;
+
+            for (var i = 0; i < tokens.length; i++) {
+                var token = tokens[i].trim()
+                var array = token.split(' ')
+
+                if (token.startsWith('lease')) {
+                    item = {}
+                    item.ip = array[1]
+
+                } else if (token.startsWith('hardware ethernet')) {
+                    item.mac = array[2]
+
+                } else if (token.startsWith('client-hostname')) {
+                    item.hostname = array[1] || ''
+
+                } else if (token.startsWith('ends')) {
+                    item.ends = (array[2] || '') + ' ' + (array[3] || '')
+
+                } else if (token.startsWith('starts')) {
+                    item.starts = (array[2] || '') + ' ' + (array[3] || '')
+
+                } else if (token.startsWith('set vendor-class-identifier =')) {
+                    item.vendor = array[3] || ''
+                    
+                } else if (token.startsWith('}')) {
+                    for (var key in item) {
+                        item[key] = item[key].replace(/[";]/g, '')
+                    }
+
+                    //console.log(item)
+                    var oldItem = keys[item.mac]
+                    if (!oldItem) {
+                        list.push(item)
+                        keys[item.mac] = item
+
+                        item.id = (index++) + "";
+
+                    } else {
+                        for (var key in item) {
+                            oldItem[key] = item[key]
+                        }
+                    }
+
+                    item = null
+                }
+            }
+
+            return list
+        }
+
+        function reloadList() {
+            showSpinkitLoading();
+
+            var now = new Date()
+            var q = now.getTime()
+            // var host = ""
+            var host = "../cloud/dhcp/"
+            var url = host + 'dhcpd.leases?v=3&q=' + q
+            $.get(url, function(data) {
+                show_table(parse_list(data));
+                hideSpinkitLoading();
+            })
+        }
+
+        $(document).ready(function() {
+            reloadList()
+
+            $("#refresh-button").click(reloadList)
+        })
+    </script>
+</head>
+<body class="list-body">
+<nav class="navbar navbar-default">
+    <div class="container-fluid">
+        <div class="navbar-header">
+            <span class="navbar-brand"><%= lang.dhcp_title %></span>
+        </div>
+    </div>
+</nav>
+
+<div style="display:none;">
+    <div id="table-toolbar">
+        <button id="refresh-button" class="btn"><%= lang.monitor_refresh_input %></button>
+    </div>
+</div>
+
+<div id="list"><table id="table"></table></div>
+
+</body>
+</html>

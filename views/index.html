@@ -1,0 +1,127 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+	<meta charset="utf-8">
+	<meta http-equiv="X-UA-Compatible" content="IE=edge;IE=8;IE=9;IE=10;IE=11;">
+	<meta name="viewport" content="width=device-width, initial-scale=1">
+	<title>NMS</title>
+	<!-- Css files -->
+	<link rel="stylesheet" type="text/css" href="/statics/css/bootstrap.min.css">
+	<link rel="stylesheet" type="text/css" href="/statics/css/font-awesome.min.css">
+	<link rel="stylesheet" type="text/css" href="/statics/css/tree-menu.css">
+	<link rel="stylesheet" type="text/css" href="./css/index.css?v=1">
+	<style>
+		html{
+			height:100%;
+		}
+		.main{
+			position: fixed;
+			top:0px;
+			bottom: 0px;
+			right: 0px;
+			left: 0px;
+		}
+	</style>
+	<script type="text/javascript" language="javascript">
+		function changeFrameHeight() {
+			var ifm = document.getElementById("cmpp_iframe");
+			ifm.height = document.documentElement.clientHeight;
+		}
+		window.onresize = function () {
+			changeFrameHeight();
+		}
+	</script>
+</head>
+
+<body>
+	<div class="content">
+		<!-- start: Main Menu -->
+		<div class="sidebar"><div class="sidebar-collapse">
+			<div id="sidebar-menu" class="sidebar-menu"><ul class="nav nav-sidebar">
+				
+				<li class="active opened">
+					<a href="javascript:void(0)"><i class="fa fa-desktop"></i><span class="text"> <%= lang.index_list_monitor %></span> <span class="fa fa-angle-down pull-right"></span></a>
+					<ul class="nav sub" style="display: block;">
+
+						<li class="active">
+							<a href="./monitoring?v=3" target="main"><i class="fa fa-desktop"></i><span class="text"> <%= lang.index_list_monitor %></span></a>
+						</li>
+						<li>
+							<a href="./servers_status?v=3" target="main"><i class="fa fa-server"></i><span class="text"> <%= lang.index_list_server %></span></a>
+						</li>
+						<li>
+							<a href="./dhcp?v=3" target="main"><i class="fa fa-list-ol"></i><span class="text"> <%= lang.index_list_dhcp %></span></a>
+						</li>
+					</ul>
+				</li>
+
+				<li>
+					<a href="javascript:void(0)"><i class="fa fa-gear"></i><span class="text"> <%= lang.index_list_setting %></span> <span class="fa fa-angle-down pull-right"></span></a>
+					<ul class="nav sub">
+
+						<li>
+							<a href="./gateway_settings?v=3" target="main"><i class="fa fa-gear"></i><span class="text"> <%= lang.index_list_setting %></span></a>
+						</li>
+						<li>
+							<a href="./remote_control?v=3" target="main"><i class="fa fa-wrench"></i><span class="text"> <%= lang.index_list_control %></span></a>
+						</li>
+					</ul>
+				</li>
+
+				<li>
+					<a href="javascript:void(0)"><i class="fa fa-bar-chart"></i><span class="text"> <%= lang.index_list_stream %></span> <span class="fa fa-angle-down pull-right"></span></a>
+					<ul class="nav sub">						
+
+						<li>
+							<a href="./data_stream?v=3" target="main"><i class="fa fa-list"></i><span class="text"> <%= lang.index_list_stream %></span></a>
+						</li>
+						<li>
+							<a href="./gps_stream?v=3" target="main"><i class="fa fa-list"></i><span class="text"> <%= lang.index_list_gps_stream %></span></a>
+						</li>
+						<!-- <li id="data-view-li">
+							<a href="./data_view?v=3" target="main"><i class="fa fa-area-chart"></i><span class="text"> <%= lang.index_list_view %></span></a>
+						</li> -->
+						<!-- <li>
+							<a href="./monitoring_dashboard?id=0030184f1700" target="main"><i class="fa fa-area-chart"></i><span class="text"> Dashboard test</span></a>
+						</li> -->
+					</ul>
+				</li>
+
+				<!-- <li>
+					<a href="javascript:void(0)"><i class="fa fa-video-camera"></i><span class="text">Camera</span> <span class="fa fa-angle-down pull-right"></span></a>
+					<ul class="nav sub">						
+						<li>
+							<a href="./camera/?v=3" target="main"><i class="fa fa-list"></i><span class="text"> <%= lang.index_list_stream %></span></a>
+						</li>
+						<li>
+							<a href="./camera/?v=3" target="main"><i class="fa fa-list"></i><span class="text"> <%= lang.index_list_stream %></span></a>
+						</li>
+						<li>
+							<a href="./camera/?v=3" target="main"><i class="fa fa-list"></i><span class="text"> <%= lang.index_list_stream %></span></a>
+						</li>
+					</ul>
+				</li> -->
+			</ul></div>
+		</div></div>
+		<!-- end: Main Menu -->
+
+		<!-- start: Content -->
+		<div class="main">
+			<iframe name="main" id="cmpp_iframe" class="cmpp_iframe" width="100%" height="100%" src="./monitoring?v=3" frameborder="0" onload="changeFrameHeight()"></iframe>
+		</div>
+		<!-- end: Content -->
+
+
+	</div>
+	<!--/container-->
+
+	<!-- <div class="clearfix"></div> -->
+	<!-- start: JavaScript-->
+	<script src="/statics/js/jquery.min.js"></script>
+	<script src="/statics/js/bootstrap.min.js"></script>
+	<script src="/statics/js/tree-menu.js"></script>
+
+</body>
+
+</html>

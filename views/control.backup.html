@@ -1,0 +1,277 @@
+<html>
+
+<head>
+    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge;IE=8;IE=9;IE=10;IE=11;" />
+    <title><%= lang.contorl_title %></title>
+    <link rel="stylesheet" type="text/css" href="/statics/css/jquery-ui.min.css">
+    <link rel="stylesheet" type="text/css" href="/statics/css/bootstrap.min.css">
+    <link rel="stylesheet" type="text/css" href="/statics/css/bootstrap-theme.min.css"> 
+    <link rel="stylesheet" type="text/css" href="./css/style.css">  
+    <script type="text/javascript" src="./js/base-loading.js"></script>
+    <style>
+        /* body {
+            margin: 16px;
+        } */
+
+        #control-table th {
+            padding: 5px 8px;
+            border-bottom: 2px solid #ddd;
+        }
+
+        #control-table td {
+            padding: 5px 8px;
+            border-bottom: 1px solid #ddd;
+        }
+
+        #tools {
+            margin-bottom: 16px;
+        }
+
+        #dialog {
+            position: fixed;
+            background: rgba(255, 255, 255, 0.8);
+            top: 0px;
+            bottom: 0px;
+            left: 0px;
+            right: 0px;
+            *padding: 64px;
+        }
+
+        #serviceStateOn {
+            width: 10px;
+            height: 10px;
+            margin: 0 auto;
+            background-color: #1E90FF
+        }
+
+        #serviceStateRed {
+            width: 10px;
+            height: 10px;
+            margin: 0 auto;
+            background-color: #ff0000
+        }
+
+        #serviceStateOff {
+            width: 10px;
+            height: 10px;
+            margin: 0 auto;
+            background-color: #222222
+        }
+
+        #dialog-inner {
+            background: #FFF;
+            border: 1px solid #CCC;
+            width: 600px;
+            height: 100%;
+            margin: 0px auto;
+            box-shadow: 5px 5px 5px #CCC;
+        }
+
+        #version {
+            font-size: 16px;
+            color: rgba(150, 150, 150, 0.8);
+            /*border: 2px solid rgb(81, 150, 180);*/
+        }
+
+        .config-dialog-body span {
+            min-width: 160px;
+            line-height: 44px;
+            display: inline-block;
+        }
+
+        .config-dialog-body button {
+            margin-top: 10px;
+            margin-bottom: 10px;
+        }
+    </style>
+</head>
+
+<body>
+    <nav class="navbar navbar-default">
+        <div class="container-fluid">
+            <div class="navbar-header">
+                <span class="navbar-brand"><%= lang.contorl_title %></span>
+            </div>
+        </div>
+    </nav>
+    <div class="container">
+        <div class="panel panel-default" style="width:1140px;">
+            <div class="panel-heading">
+                <h3 class="panel-title"><%= lang.control_bulk_management_title %></h3>
+            </div>
+            <div class="panel-body">
+                <center>
+                    <table id="control-table">
+                        <tr>
+                            <th><%= lang.control_bulk_management_table_model %></th>
+                            <th><%= lang.control_bulk_management_table_version %></th>
+                            <th><%= lang.control_bulk_management_table_firmwaresize %></th>
+                            <th><%= lang.control_bulk_management_table_uploaddate %></th>
+                            <th><%= lang.control_bulk_management_table_uploadpatch %></th>
+                            <th><%= lang.control_bulk_management_table_update %></th>
+                            <th><%= lang.control_bulk_management_table_uploadfirmware %></th>
+                            <th><%= lang.control_bulk_management_table_upgrade %></th>
+                            <th><%= lang.control_bulk_management_table_restart %></th>
+                            <th><%= lang.control_bulk_management_table_reboot %></th>
+                            <th><%= lang.control_bulk_management_table_download %></th>
+                        </tr>
+                    </table>
+                <!-- </div> -->
+                </center>
+            </div>
+        </div>
+        <div class="modal fade" id="dialog" tabindex="-1" role="dialog" aria-labelledby="dialog-label" aria-hidden="true">
+            <div class="modal-dialog">
+                <div class="modal-content" style="width:500px;">
+                    <div class="modal-header">
+                        <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
+                        <h4 class="modal-title" id="dialog-label"><%= lang.control_upload_modal_title %></h4>
+                    </div>
+                    <div class="modal-body" style="margin: 0px auto;">
+                         <form id="files" class="form-horizontal" role="form" method="post" enctype="multipart/form-data">
+                            <div class="form-group" style="width:400px;">
+                                <label for="select" class="col-sm-2 control-label" style="padding-top:10px;"><%= lang.control_upload_modal_title %>:</label>
+                                <div class="col-sm-10">
+                                    <select id="select" class="form-control" name="target" style="width:150px" disabled="disabled"></select>
+                                </div>
+                            </div>
+                            <div class="form-group" style="width:400px;">
+                                <label for="version" class="col-sm-2 control-label" style="padding-top:10px;"><%= lang.control_upload_modal_form_version_label %>:</label>
+                                <div class="col-sm-10">
+                                    <input id="version" type="text" class="form-control" placeholder="版本号" name="version" style="width:150px;">
+                                </div>
+                            </div>
+                            <div class="form-group" style="width:400px">
+                                <label for="avatar" class="col-sm-2 control-label" style="padding-top:10px;"><%= lang.control_upload_modal_form_file_label %>:</label>
+                                <div class="col-sm-10" style="padding-top:4px;">
+                                    <input type="file" name="avatar" />
+                                </div>
+                            </div>
+                        </form>
+                    </div>
+                    <div class="modal-footer">
+                        <button type="button" class="btn btn-default" data-dismiss="modal"><%= lang.control_upload_modal_form_close_button %></button>
+                        <button type="button" class="btn btn-primary" data-toggle="modal" value="Upload" onclick="upload()"><%= lang.control_upload_modal_form_upload_button %></button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <script type="text/javascript" src="/statics/js/jquery.min.js"></script>
+    <script type="text/javascript" src="/statics/js/jquery-ui.min.js"></script>
+    <script type="text/javascript" src="/statics/js/bootstrap.min.js"></script>
+    <script type="text/javascript" src="./js/utils.js"></script>
+    <script>
+        var upload_type = "";
+        function _add(item) {
+            var upload_time = new Date(item.upload_time).toLocaleString();
+            $('#control-table > tbody:last-child').append('<tr> \
+                <td class="tdname" align="center">' + item.name + '</td> \
+                <td class="tdip" align="center">' + item.version + '</td>\
+                <td class="tdip" align="center">' + parseInt(item.firmware_size / 1024) + 'KB</td>\
+                <td class="tdip" align="center">' + upload_time + '</td>\
+                <td class="tdip" align="center">' + '<button id="' + item.name + '"' + 'name="' + item.name + '" class="btn btn-primary"' + 'onclick="show_upload_patch_modal(this.name)"><%= lang.control_bulk_management_table_uploadpatch_button %></button>' + '</td> \
+                <td class="tdip" align="center">' + '<button id="' + item.name + '"' + 'name="' + item.name + '" class="btn btn-primary"' + 'onclick="post_data(this.name,' + "'patch'" + ')"><%= lang.control_bulk_management_table_update_button %></button>' + '</td> \
+                <td class="tdip" align="center">' + '<button id="' + item.name + '"' + 'name="' + item.name + '" class="btn btn-primary"' + 'onclick="show_upload_firmware_modal(this.name)"><%= lang.control_bulk_management_table_uploadfirmware_button %></button>' + '</td> \
+                <td class="tdip" align="center">' + '<button id="' + item.name + '"' + 'name="' + item.name + '" class="btn btn-primary"' + 'onclick="post_data(this.name,' + "'upgrade'" + ')"><%= lang.control_bulk_management_table_upgrade_button %></button>' + '</td> \
+                <td class="tdip" align="center">' + '<button id="' + item.name + '"' + 'name="' + item.name + '" class="btn btn-primary"' + 'onclick="post_data(this.name,' + "'restart'" + ')"><%= lang.control_bulk_management_table_restart_button %></button>' + '</td> \
+                <td class="tdip" align="center">' + '<button id="' + item.name + '"' + 'name="' + item.name + '" class="btn btn-primary"' + 'onclick="post_data(this.name,' + "'reboot'" + ')"><%= lang.control_bulk_management_table_reboot_button %></button>' + '</td> \
+                <td class="tdip" align="center">' + '<a href="' + item.link + '"><%= lang.control_bulk_management_table_download_button %></td>\
+                </tr>');
+            $('#select').append('<option value="' + item.name + '">' + item.name + '</option>')
+        }
+        function post_data(name, message) {
+            // console.log(name, message);
+            var data = { name: name, message: message };
+            var r = confirm("Are you sure want to " + message + " all " + name + " device?");
+            if (r == true){
+                $.post('./device/control', data, function (result, status) {
+                    if (result.result == 0) {
+                        window.alert('消息已发出，请耐心等候');
+                        console.log('Post message success,please wait');
+                    } else if (result.result == 1) {
+                        window.alert('没有相关权限');
+                        console.log('Post config fail, no power');
+                    } else {
+                        console.log('Post config fail, no login');
+                        parent.location.reload();
+                    }
+                });
+            } else {
+                window.alert("Canceled!");
+            }   
+        }
+        function show_upload_patch_modal(name){
+            $('#dialog').modal('show');
+            $("#select").val(name);
+            upload_type = "patch";
+        }
+        function show_upload_firmware_modal(name){
+            $('#dialog').modal('show');
+            $("#select").val(name);
+            upload_type = "firmware";
+        }
+        function upload() {
+            var formData = new FormData($("#files")[0]);
+            var target = $('#select').val();
+            var version = $('#version').val();
+            $.ajax({
+                url: './upload/' + upload_type + '?target=' + target + '&version=' + version,
+                type: 'POST',
+                data: formData,
+                cache: false,
+                contentType: false,
+                processData: false,
+                success: function (data) {
+                    // console.log(data);
+                    if (data.result == 0) {
+                        window.alert('upload success');
+                        $('#dialog').modal('hide');
+                    } else if (data.result == -1) {
+                        window.alert('write file fail,please retry',data.data);
+                        console.log('write file fail,please retry',data.data);
+                    } else if (data.result == -2) {
+                        window.alert('upload fail,the file is exists');
+                        console.log('upload fail,the file is exists');
+                    } else if (data.result == 1) {
+                        window.alert('upload fail, no power');
+                        console.log('upload fail, no power');
+                    } else {
+                        window.alert('upload fail, unknow reason');
+                        console.log('upload fail, unknow reason');
+                    }
+                },
+                error: function (jqXHR, textStatus, errorThrown) {
+                    window.alert(textStatus, errorThrown);
+                }
+            });
+        }
+        $(document).ready(function () {
+            $.get('./device/control', function (result, status) {
+                if (result.result == 0) {
+                    for (var i in result.data) {
+                        _add(result.data[i])
+                    }
+                } else if (result.result == 1) {
+                    window.alert('Have not relevant authority');
+                    console.log('get config fail, no power');
+                } else {
+                    console.log('get config fail, no login');
+                    parent.location.reload();
+                }
+            })
+        });
+        var offset = $('.panel-default').offset().left;
+        var width = (offset * 2) + 1440;
+        $('.navbar').css('width', width - 300);
+        $(window).resize(function(){
+            // console.log("window",$(window).height(),"html",$('html').height(),"body",$('body').height());
+            var offset = $('.panel-default').offset().left;
+            var width = (offset * 2) + 1440;
+            $('.navbar').css('width', width - 300);
+        });
+    </script>
+</body>
+
+</html>

@@ -1,0 +1,311 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <!-- <meta http-equiv="Content-Type" content="text/html; charset=UTF-8"> -->
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge;IE=8;IE=9;IE=10;IE=11;" />
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title><%= lang.monitor_title %></title>
+     <link rel="stylesheet" type="text/css" href="/statics/css/bootstrap.min.css"> 
+    <link rel="stylesheet" type="text/css" href="/statics/css/bootstrap-table.min.css">
+    <link rel="stylesheet" type="text/css" href="/statics/css/bootstrap-switch.min.css"> 
+    <link rel="stylesheet" type="text/css" href="/statics/css/font-awesome.min.css">
+    <link rel="stylesheet" type="text/css" href="/statics/css/bootstrap-theme.min.css">  
+
+    <!-- <link rel="stylesheet" type="text/css" href="./css/bootstrap.min.css"> 
+    <link rel="stylesheet" type="text/css" href="./css/bootstrap-table.min.css">
+    <link rel="stylesheet" type="text/css" href="./css/bootstrap-switch.min.css"> 
+    <link rel="stylesheet" type="text/css" href="./css/font-awesome.min.css">
+    <link rel="stylesheet" type="text/css" href="./css/bootstrap-theme.min.css">  -->
+    <!-- <link rel="stylesheet" type="text/css" href="../css/style.css">        -->
+    <script type="text/javascript" src="./js/base-loading.js"></script>
+    <style>
+        html{
+            font-family: Arial, Helvetica, sans-serif
+        }
+
+        a{
+            cursor: pointer;
+        }
+
+        iframe{
+            border: 0;
+        }
+
+        .page-header {
+            margin-top:-10px;
+            padding-left:15px;
+            width:calc(100% - 250px);
+        }
+
+        #Table tr td{
+            white-space: nowrap;
+            /* cursor: hand; */
+            /* -webkit-user-select: none;
+            -moz-user-select: none;
+            -ms-user-select: none; */
+        }
+
+        #dialog {
+            position: fixed;
+            background: rgba(255, 255, 255, 0.8);
+            top: 0px;
+            bottom: 0px;
+            left: 0px;
+            right: 0px;
+            *padding: 64px;
+        }
+
+        #dialog-label {
+            -webkit-user-select: none;
+            -moz-user-select: none;
+            -ms-user-select: none;
+        } 
+
+        .serviceStateOn {
+            width: 10px;
+            height: 10px;
+            color: #32CD32;
+            /* margin: 0 auto;  */
+            /* background-color: #1E90FF */
+        }
+
+        .serviceStateRed {
+            width: 10px;
+            height: 10px;
+            /* margin: 0 auto;  */
+            /* background-color: #ff0000 */
+        }
+
+        .serviceStateOff {
+            width: 10px;
+            height: 10px;
+            color: #ff0000;
+            /* margin: 0 auto;  */
+            /* background-color: #222222 */
+        }
+
+        .onlineTipsOnline {
+            background-color: #ffffff
+        }
+
+        .onlineTipsOffline {
+            background-color: #fa8072
+        }
+
+        #dialog-inner {
+            background: #FFF;
+            border: 1px solid #CCC;
+            width: 600px;
+            height: 100%;
+            margin: 0px auto;
+            box-shadow: 5px 5px 5px #CCC;
+        }
+
+        .dialog-body-cpu-chart {
+            width:100%;
+            padding-top:10px;
+            /* padding-bottom: 10px; */
+            padding-left: calc(50% - 250px); 
+        }
+
+        .dialog-body-mem-chart {
+            width:100%;
+            padding-top:10px;
+             /* padding-bottom: 10px; */
+            padding-left: calc(50% - 250px); 
+        }
+
+        .dialog-button{
+            padding-bottom: 20px;
+            padding-left: calc(50% - 90px);
+        }
+
+        .statistics {
+            font-size: 16px;
+            color: rgba(150, 150, 150, 0.8);
+        }
+
+        .dashboard-div {
+            position: absolute;
+            left: 0px;
+            top: 0px;
+            /* width: 100%;
+            height: 100%; */
+        }
+
+        .dashboard-iframe {
+            width: 1000px;
+            height: 100%; 
+        }
+
+    </style>
+</head>
+
+<body>
+    <nav class="navbar navbar-default">
+        <div class="container-fluid">
+            <div class="navbar-header">
+                <span class="navbar-brand"><%= lang.monitor_title %></span>
+                <div style="float:left;margin-left:20px;padding-top:15px;">
+                    <span class="statistics"><%= lang.monitor_total_span %>:</span>
+                    <span id="device-total" class="statistics"></span>
+                    <span class="statistics"><%= lang.monitor_online_span %>:</span>
+                    <span id="device-online" class="statistics"></span>
+                    <span class="statistics"><%= lang.monitor_offline_span %>:</span>
+                    <span id="device-offline" class="statistics"></span>             
+                </div>
+            </div>
+            <ul class="nav navbar-nav navbar-right">
+                <li>
+                    <div style="float:left;padding-top:8px;">
+                        <div class="input-group">
+                            <span class="input-group-addon" style="width:60px;">Search:</span>
+                            <input class="form-control" id="search-input" name="search-input" data-provide="typeahead" autocomplete="off" placeholder="ID or IP" style="width:160px;"/>
+                            <span class="input-group-addon btn btn-primary" id="search-button" style="width:88px;" onclick=""><i class="fa fa-search"></i>Search</span>
+                        </div>                   
+                    </div>
+                </li>
+                <li><div style="float:left;padding:8px 16px;"><input id="auto-refresh-switch" type="checkbox" checked /></div></li>
+            </ul>   
+        </div>     
+    </nav>
+    <div>
+        <!-- <div style="padding-left:15px;"> -->
+        <div class="page-header">
+            <div style="margin-top:15px;">
+                <!-- <button id="update-button" class="btn btn-success"><%= lang.monitor_control_button_patch %></button> -->
+                <button id="upgrade-button" class="btn btn-success"><%= lang.monitor_control_button_upgrade %></button>
+                <button id="restart-button" class="btn btn-success"><%= lang.monitor_control_button_restart %></button>
+                <button id="reboot-button" class="btn btn-success"><%= lang.monitor_control_button_reboot %></button>                
+            </div>          
+        </div>
+        <div id="myTabContent" class="tab-content" style="margin-top:-70px;"> 
+            <div id="frame">
+                <div id="list-view"> 
+                    <table id="Table"></table>
+                </div>
+            </div>
+        </div>
+        <div class="modal fade" id="dialog" tabindex="-1" role="dialog" aria-labelledby="dialog-label" aria-hidden="true">
+            <div class="modal-dialog">
+                <div class="modal-content" style="width:600px;">
+                    <div class="modal-header">
+                        <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
+                        <h4 class="modal-title" id="dialog-label"></h4>
+                    </div>
+                    <div class="dialog-body" style="margin: 0px auto;">
+                        <div class="dialog-body-cpu-chart">
+                            <canvas id="cpu-chart" width="500px" height="250px">
+                                Your web-browser does not support the HTML 5 canvas element.
+                            </canvas>
+                        </div>
+                        <div class="dialog-body-mem-chart">
+                            <canvas id="mem-chart" width="500px" height="250px">
+                                Your web-browser does not support the HTML 5 canvas element.
+                            </canvas>
+                        </div>
+                    </div>
+                    <div class="dialog-footer">
+                        <div id="dialog-button" class="dialog-button">
+                            <button id="button-update" class="btn btn-primary" data-toggle="modal" onclick="_control(this.name,'upgrade')"><%= lang.monitor_modal_upgrade_button %></button>&nbsp; &nbsp; &nbsp;
+                            <button id="button-reboot" class="btn btn-primary" data-toggle="modal" onclick="_control(this.name,'reboot')"><%= lang.monitor_modal_reboot_button %></button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="modal fade" id="dashboard-dialog" tabindex="-1" role="dialog" aria-labelledby="dialog-label" aria-hidden="true">
+            <div class="modal-dialog" style="width:97%;height:90%;">
+                <div class="modal-content" style="height:100%;">
+                    <div class="modal-header">
+                        <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
+                        <h4 class="modal-title" id="dialog-label"></h4>
+                    </div>
+                    <div id="dashboard-dialog-body"  class="dialog-body" style="margin: 0px auto;height:100%;">
+                        
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="modal fade" id="dataview-dialog" tabindex="-1" role="dialog" aria-labelledby="dialog-label" aria-hidden="true">
+            <div class="modal-dialog" style="width:90%;height:80%;">
+                <div class="modal-content" style="height:100%;">
+                    <div class="modal-header">
+                        <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
+                        <h4 class="modal-title" id="dialog-label"></h4>
+                    </div>
+                    <div id="dataview-dialog-body"  class="dialog-body" style="margin: 0px auto;height:100%;">
+
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="modal fade" id="action-dialog" tabindex="-1" role="dialog" aria-labelledby="dialog-label" aria-hidden="true">
+            <div class="modal-dialog">
+                <div class="modal-content" style="width:800px;">
+                    <div class="modal-header">
+                        <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
+                        <h4 class="modal-title" id="dialog-label"></h4>
+                    </div>
+                    <div id="action-dialog-body" class="dialog-body" style="margin: 0px auto;">
+                        
+                    </div>
+                    <div class="dialog-footer">
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <script>
+        var language = {};
+        language.langlocale                     = "<%= lang.langlocale %>";
+        language.refresh_input_refresh          = "<%= lang.monitor_refresh_input %>";
+        language.refresh_input_unrefresh        = "<%= lang.monitor_refresh_uninput %>";
+        language.table_column_id                = "<%= lang.monitor_table_column_id %>";
+        language.table_column_ip                = "<%= lang.monitor_table_column_ip %>";
+        language.table_column_target            = "<%= lang.monitor_table_column_target %>";
+        language.table_column_model             = "<%= lang.monitor_table_column_model %>";
+        language.table_column_version           = "<%= lang.monitor_table_column_version %>";
+        language.table_column_status            = "<%= lang.monitor_table_column_status %>";
+        language.table_column_cpu               = "<%= lang.monitor_table_column_cpu %>";
+        language.table_column_mem               = "<%= lang.monitor_table_column_mem %>";
+        language.table_column_uptimed           = "<%= lang.monitor_table_column_uptime %>";
+        language.table_column_nettype           = "<%= lang.monitor_table_column_nettype %>";
+        language.table_column_nettx             = "<%= lang.monitor_table_column_nettx %>";
+        language.table_column_netrx             = "<%= lang.monitor_table_column_netrx %>";
+        language.table_column_restart           = "<%= lang.monitor_table_column_restart %>";
+        language.table_column_action            = "<%= lang.monitor_table_column_action %>";
+        language.table_column_status_online     = "<%= lang.monitor_table_column_status_online %>";
+        language.table_column_status_offline    = "<%= lang.monitor_table_column_status_offline %>";
+        language.table_column_uptime_days       = "<%= lang.monitor_table_column_uptime_days %>";
+        language.table_column_uptime_hours      = "<%= lang.monitor_table_column_uptime_hours %>";
+        language.table_column_uptime_minutes    = "<%= lang.monitor_table_column_uptime_minutes %>";
+        language.table_column_uptime_seconds    = "<%= lang.monitor_table_column_uptime_seconds %>";
+        language.modal_chart_cpu_title          = "<%= lang.monitor_modal_chart_cpu_title %>";
+        language.modal_chart_mem_title          = "<%= lang.monitor_modal_chart_mem_title %>";
+    </script>
+     <script type="text/javascript" src="/statics/js/jquery.min.js"></script> 
+    <script type="text/javascript" src="/statics/js/bootstrap.min.js"></script>
+    <script type="text/javascript" src="/statics/js/bootstrap-typeahead.min.js"></script>
+    <script type="text/javascript" src="/statics/js/bootstrap-table.min.js"></script>
+    <script type="text/javascript" src="/statics/js/bootstrap-switch.min.js"></script>
+    <script type="text/javascript" src="/statics/js/bootstrap-table-editable.min.js"></script> 
+    <script type="text/javascript" src="/statics/js/bootstrap-table-locale-all.min.js"></script>
+    <script type="text/javascript" src="/statics/js/echarts.min.js"></script> 
+
+    <!-- <script type="text/javascript" src="./js/jquery.min.js"></script> 
+    <script type="text/javascript" src="./js/bootstrap.min.js"></script>
+    <script type="text/javascript" src="./js/bootstrap-typeahead.min.js"></script>
+    <script type="text/javascript" src="./js/bootstrap-table.min.js"></script>
+    <script type="text/javascript" src="./js/bootstrap-switch.min.js"></script>
+    <script type="text/javascript" src="./js/bootstrap-table-editable.min.js"></script> 
+    <script type="text/javascript" src="./js/bootstrap-table-locale-all.min.js"></script>
+    <script type="text/javascript" src="./js/echarts.min.js"></script> -->
+
+    <script type="text/javascript" src="./js/popwin.js"></script>
+    <script type="text/javascript" src="./js/monitor.js?v=1"></script>
+</body>
+
+</html>

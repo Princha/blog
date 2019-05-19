@@ -1,0 +1,151 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <!-- <meta http-equiv="Content-Type" content="text/html; charset=UTF-8"> -->
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge;IE=8;IE=9;IE=10;IE=11;" />
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>
+        <%= lang.view_title %>
+    </title>
+    <link rel="stylesheet" type="text/css" href="./css/bootstrap.min.css">
+    <!-- <link rel="stylesheet" type="text/css" href="http://www.beaconice.com.cn/statics/css/bootstrap-table.min.css">   -->
+    <link rel="stylesheet" type="text/css" href="./css/bootstrap-table.min.css">
+    <link rel="stylesheet" type="text/css" href="./css/bootstrap-switch.min.css">
+    <link rel="stylesheet" type="text/css" href="./css/bootstrap-validator.min.css">
+    <link rel="stylesheet" type="text/css" href="./css/font-awesome.min.css">
+    <!-- <link rel="stylesheet" type="text/css" href="../css/style.css">        -->
+
+    <style>
+        html{
+            height: 100%;
+            width: 100%;
+        }
+
+        body{
+            height: 100%;
+            width: 100%;
+        }
+
+        .search-bar-div0 {
+            position:absolute;
+            width: 70%;
+            left: 25%;
+             top: calc(50% - 20px); 
+            /* top:60px; */
+        }
+
+        .search-bar-div1 {
+            width: 100%;
+            height: 40px;
+        }
+
+        .search-bar-div2 {
+            display: inline-block;
+            width: 70%;
+            height: 100%;
+        }
+
+        .search-bar-input {
+            width: 40% !important;
+            height: 100% !important;
+        }
+
+        .search-bar-button {
+            width: 20% !important;
+            height: 100% !important ;
+        }
+
+        .search-advanced-a {
+            cursor: pointer;
+        }
+
+        .search-bar-advanced-div {
+            display: none;
+            margin-top: 5px;
+            margin-left: 17%;
+            /* margin: 5px auto; */
+        }
+
+        .search-bar-advanced-button {
+            width: 5% !important;
+            height: 100% !important ;
+        }
+
+        .chart-div {
+            /* display: -webkit-flex;      */
+            -webkit-justify-content: center;  
+            -webkit-align-items: center;
+
+            margin-top:65px;
+            height:calc(100% - 180px);
+            width:100%; 
+              display: none;   
+             /* margin:0 auto; 
+              width:100%;  */
+        }
+
+
+    </style>
+</head>
+
+<body>
+    <nav class="navbar navbar-default">
+        <div class="container-fluid">
+            <div class="navbar-header">
+                <span class="navbar-brand"><%= lang.view_title %></span>
+            </div>
+        </div>
+    </nav>
+    <div class="search-bar-div0">
+        <div class="search-bar-div1">
+            <div class="search-bar-div2 input-group input-group-lg">      
+                <input id="search-did-input" type="text" class="search-bar-input form-control" placeholder="<%= lang.view_searchbar_did_input_placeholder %>">
+                <input id="search-sname-input" type="text" class="search-bar-input form-control" placeholder="<%= lang.view_searchbar_sname_input_placeholder %>">
+                <button id="search-button" type="button" class="search-bar-button btn btn-info"><%= lang.view_searchbar_search_button %></button>
+            </div>
+            <a id="search-advanced-a" class="search-advanced-a"><%= lang.view_searchbar_search_advanced_button %></a>
+        </div>
+        <div id="search-bar-advanced-radio" class="search-bar-advanced-div btn-group" data-toggle="buttons">
+            <label class="btn btn-primary active">
+                <input type="radio" name="1h" id="search-bar-advanced-option-1h"><%= lang.view_searchbar_search_advanced_option_1h %>
+            </label>
+            <label class="btn btn-primary">
+                <input type="radio" name="6h" id="search-bar-advanced-option-6h"><%= lang.view_searchbar_search_advanced_option_6h %>
+            </label>
+            <label class="btn btn-primary">
+                <input type="radio" name="1d" id="search-bar-advanced-option-1d"><%= lang.view_searchbar_search_advanced_option_1d %>
+            </label>
+            <label class="btn btn-primary">
+                <input type="radio" name="7d" id="search-bar-advanced-option-7d"><%= lang.view_searchbar_search_advanced_option_7d %>
+            </label>
+        </div> 
+    </div>
+    <div class="chart-div row">
+        <div class="col-sm-11" style="height:100%;">
+            <div class="panel panel-default" style="height:100%;width:100%;">
+                <div class="panel-heading">Chart</div>
+                <div id="chart-div" class="panel-body" style="height:90%;width:100%;"> &nbsp; </div>
+            </div>
+        </div>
+    </div>
+    <script>
+        language = {};
+        language.langlocale = "<%= lang.langlocale %>";
+        language.alert_didparams = "<%= lang.view_alert_didparams %>";
+        language.alert_snameparams = "<%= lang.view_alert_snameparams %>";
+        language.alert_nomatches = "<%= lang.view_alert_nomatches %>";
+    </script>
+    <script type="text/javascript" src="./js/jquery.min.js"></script>
+    <script type="text/javascript" src="./js/bootstrap.min.js"></script>
+    <script type="text/javascript" src="./js/bootstrap-table.min.js"></script>
+    <script type="text/javascript" src="./js/bootstrap-switch.min.js"></script>
+    <script type="text/javascript" src="./js/bootstrap-table-editable.min.js"></script>
+    <script type="text/javascript" src="./js/bootstrap-table-locale-all.min.js"></script>
+    <script type="text/javascript" src="./js/bootstrap-validator.min.js"></script>
+    <script type="text/javascript" src="./js/echarts.min.js"></script>
+    <script type="text/javascript" src="./js/view.js"></script>
+</body>
+
+</html>

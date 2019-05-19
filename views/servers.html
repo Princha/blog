@@ -1,0 +1,139 @@
+<html>
+
+<head>
+    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge;" />
+    <title><%= lang.server_title %></title>
+    <!-- <link rel="stylesheet" type="text/css" href="./css/jquery-ui.min.css"> -->
+    <link rel="stylesheet" type="text/css" href="/statics/css/bootstrap.min.css">
+    <link rel="stylesheet" type="text/css" href="/statics/css/font-awesome.min.css">
+    <link rel="stylesheet" type="text/css" href="/statics/css/bootstrap-theme.min.css">
+    <link rel="stylesheet" type="text/css" href="./css/style.css">   
+    <script type="text/javascript" src="./js/base-loading.js"></script>
+    <style>
+        /* body {
+            margin: 16px;
+        } */
+
+        #list-view th {
+            padding: 5px 8px;
+            border-bottom: 2px solid #ddd;
+        }
+
+        td {
+            /* padding: 5px 8px; */
+            /* border-bottom: 1px solid #ddd;  */
+            text-align: center;
+            vertical-align: middle!important;
+        }
+        
+        .table{
+            margin-bottom:5px;
+        }
+
+        .serviceStateOnline {
+            color: #32CD32;
+        }
+
+        .serviceStateOffline {
+            color: #222222;
+        }
+
+        .appStateOnline {
+            color: #32CD32;
+        }
+
+        .appStateError {
+            color: #ff0000;
+        }
+
+        .appStateStop {
+            color: #222222;
+        }
+
+        .appStateUnknow {
+            color: #FFFFFF;
+        }
+
+        .upload-icon{
+            color: #228B22;
+        }
+
+        .download-icon{
+            color: #FF8C00;
+        }
+
+        .image-server{
+            padding-top: 5px;
+            width:150px;
+        }
+
+        .title-server{
+            margin: 0 auto;
+        }
+
+        .server-description-icon{
+            padding-top:-2px;
+            margin-bottom:5px;
+            width:30px;
+            height:30px;
+        }
+        
+        .server-description{
+            color: #c0c0c0
+        }
+    </style>
+</head>
+
+<body>
+    <nav class="navbar navbar-default">
+        <div class="container-fluid">
+            <div class="navbar-header">
+                <span class="navbar-brand"><%= lang.server_title %></span>
+            </div>
+        </div>
+    </nav>
+    <!-- <div>
+        <h2 style="height:50px;">Server Status</h2>
+    </div> -->
+    <div class="frame" style="padding-left:16px;">
+        <div id="list-view" style="width:98%;">
+        </div>
+    </div>
+    <script>
+        var language = {};
+        language.collapse_serverstatus_title = "<%= lang.server_collapse_serverstatus_title %>";
+        language.collapse_appstatus_title = "<%= lang.server_collapse_appstatus_title %>";
+        language.server_status_status_span = "<%= lang.server_server_status_status_span %>";
+        language.server_status_cpu_span = "<%= lang.server_server_status_cpu_span %>";
+        language.server_status_mem_span = "<%= lang.server_server_status_mem_span %>";
+        language.server_status_upload_span = "<%= lang.server_server_status_upload_span %>";
+        language.erver_status_download_span = "<%= lang.server_server_status_download_span %>";
+        language.server_online_text = "<%= lang.server_server_online_text %>";
+        language.server_offline_text = "<%= lang.server_server_offline_text %>";
+        language.app_status_table_status = "<%= lang.server_app_status_table_status %>";
+        language.app_status_table_pmid = "<%= lang.server_app_status_table_pmid %>";
+        language.app_status_table_name = "<%= lang.server_app_status_table_name %>";
+        language.app_status_table_pid = "<%= lang.server_app_status_table_pid %>";
+        language.app_status_table_runtime = "<%= lang.server_app_status_table_runtime %>";
+        language.app_status_table_restart = "<%= lang.server_app_status_table_restart %>";
+        language.app_status_table_cpu = "<%= lang.server_app_status_table_cpu %>";
+        language.app_status_table_memory = "<%= lang.server_app_status_table_memory %>";
+        language.app_status_table_operate = "<%= lang.server_app_status_table_operate %>";
+        language.app_status_table_status_online = "<%= lang.server_app_status_table_status_online %>";
+        language.app_status_table_status_stopping = "<%= lang.server_app_status_table_status_stopping %>";
+        language.app_status_table_status_stopped = "<%= lang.server_app_status_table_status_stopped %>";
+        language.app_status_table_status_launching = "<%= lang.server_app_status_table_status_launching %>";
+        language.app_status_table_status_errored = "<%= lang.server_app_status_table_status_errored %>";
+        language.app_status_table_status_olstatus = "<%= lang.server_app_status_table_status_olstatus %>";
+        language.app_status_table_status_unknow = "<%= lang.server_app_status_table_status_unknow %>";
+        language.app_status_table_operate_restart_button = "<%= lang.server_app_status_table_operate_restart_button %>";
+    </script>
+    <script type="text/javascript" src="/statics/js/jquery.min.js"></script>
+    <script type="text/javascript" src="/statics/js/jquery-ui.min.js"></script>
+    <script type="text/javascript" src="/statics/js/bootstrap.min.js"></script>
+    <script type="text/javascript" src="./js/utils.js"></script>
+    <script type="text/javascript" src="./js/servers.js?v=1"></script> 
+</body>
+
+</html>

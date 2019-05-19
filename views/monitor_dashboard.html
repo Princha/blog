@@ -1,0 +1,558 @@
+<html>
+
+<head>
+    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge;IE=8;IE=9;IE=10;IE=11;" />
+    <title><%= lang.monitor_dashboard_title %></title>
+     <link rel="stylesheet" type="text/css" href="/statics/css/bootstrap.min.css">
+    <link rel="stylesheet" type="text/css" href="/statics/css/bootstrap-validator.min.css">
+    <link rel="stylesheet" type="text/css" href="/statics/css/bootstrap-theme.min.css">
+    <link rel="stylesheet" type="text/css" href="/statics/css/font-awesome.min.css"> 
+
+    <!-- <link rel="stylesheet" type="text/css" href="./css/bootstrap.min.css">
+    <link rel="stylesheet" type="text/css" href="./css/bootstrap-validator.min.css">
+    <link rel="stylesheet" type="text/css" href="./css/bootstrap-theme.min.css">
+    <link rel="stylesheet" type="text/css" href="./css/font-awesome.min.css"> -->
+    <style>
+        html{
+            height: 100%;
+            width: 100%;
+        }
+
+        body{
+            height: 100%;
+            width: 100%;
+        }
+
+        .table{
+            margin-bottom:5px;
+        }
+
+        .info-div{
+            margin:0px;
+            padding:0px;
+        }
+
+        .baseinfo-pixel-div{
+            width:300px; 
+            height:40px;
+            /* float:left; */
+             display:inline-block; 
+            border: 2px solid black;
+        }
+
+        .baseinfo-pixel-span{
+            font-size:20px;
+            font-weight:bold;
+            line-height:40px;
+            vertical-align:middle;
+        }
+
+        .chart-div {
+            /* display: -webkit-flex;      */
+            -webkit-justify-content: center;  
+            -webkit-align-items: center;
+
+            margin-top: 10px; 
+            margin-left: 5px;
+            /* height:calc(100% - 180px); */
+            height: 250px; 
+            /* width:375px;    */
+            display: none;
+            display: inline-block;     
+             /* margin:0 auto; 
+              width:100%;  */
+        }
+    </style>
+</head>
+
+<body>
+    <nav class="navbar navbar-default">
+        <div class="container-fluid">
+            <div class="navbar-header">
+                <span class="navbar-brand"><%= lang.monitor_dashboard_title %></span>
+            </div>
+        </div>
+    </nav>
+    <div id="collapse-div" class="collapse in" style="margin-top:5px;margin-left:16px;width:97%;">
+        <ul id="nav-ul" class="nav nav-tabs">
+            <li class="active" style="height:40px;">
+            <div class="panel panel-info">
+                <div class="panel-heading">
+                    <a id="base-info-page-a" href="#base-info-page" data-toggle="tab" onclick="page_panel_change_class(this)"><%= lang.monitor_dashboard_baseinfo_title %></a>
+                </div>
+            </div>
+            </li>
+            <li style="height:40px;">
+            <div>
+                <div class="panel-heading">
+                    <a id="data-chart-page-a" href="#data-chart-page" data-toggle="tab" onclick="page_panel_change_class(this)"><%= lang.monitor_dashboard_datachart_title %></a>
+                </div>
+            </div>
+            </li>
+        </ul>
+        <div class="tab-content" style="margin-top:4px;">
+            <div class="tab-pane fade in active" id="base-info-page">
+                <div class="panel-body">
+                    <center><p style="font-size:25px;font-weight:bold;"><%= lang.monitor_dashboard_baseinfo_info_title %></p></center>
+                    <div id="info-div" class="info-div">
+                        <div class="baseinfo-pixel-div">
+                            &nbsp;
+                            <i class="fa fa-id-card baseinfo-pixel-span"></i>
+                            &nbsp;
+                            <span class="baseinfo-pixel-span"><%= lang.monitor_dashboard_baseinfo_info_id %> : </span>
+                            <span id="base-info-id-span" class="baseinfo-pixel-span">-</span>
+                            &nbsp;
+                        </div><div class="baseinfo-pixel-div">
+                            &nbsp;
+                            <i class="fa fa-address-book baseinfo-pixel-span"></i>
+                            &nbsp;
+                            <span class="baseinfo-pixel-span"><%= lang.monitor_dashboard_baseinfo_info_name %> : </span>
+                            <span id="base-info-name-span" class="baseinfo-pixel-span">-</span>
+                            &nbsp;
+                        </div><div class="baseinfo-pixel-div">
+                            &nbsp;
+                            <i class="fa fa-microchip baseinfo-pixel-span"></i>
+                            &nbsp;
+                            <span class="baseinfo-pixel-span"><%= lang.monitor_dashboard_baseinfo_info_module %> : </span>
+                            <span id="base-info-module-span" class="baseinfo-pixel-span">-</span>
+                            &nbsp;
+                        </div><div class="baseinfo-pixel-div">
+                            &nbsp;
+                            <i class="fa fa-link baseinfo-pixel-span"></i>
+                            &nbsp;
+                            <span class="baseinfo-pixel-span"><%= lang.monitor_dashboard_baseinfo_info_ip %> : </span>
+                            <span id="base-info-ip-span" class="baseinfo-pixel-span">-</span>
+                            &nbsp;
+                        </div><div class="baseinfo-pixel-div">
+                            &nbsp;
+                            <i class="fa fa-file baseinfo-pixel-span"></i>
+                            &nbsp;
+                            <span class="baseinfo-pixel-span"><%= lang.monitor_dashboard_baseinfo_info_version %> : </span>
+                            <span id="base-info-version-span" class="baseinfo-pixel-span">-</span>
+                            &nbsp;
+                        </div><div class="baseinfo-pixel-div">
+                            &nbsp;
+                            <i class="fa fa-clock-o baseinfo-pixel-span"></i>
+                            &nbsp;
+                            <span class="baseinfo-pixel-span"><%= lang.monitor_dashboard_baseinfo_info_uptime %> : </span>
+                            <span id="base-info-uptime-span" class="baseinfo-pixel-span">-</span>
+                            &nbsp;
+                        </div><div class="baseinfo-pixel-div" style="width:600px;">
+                            &nbsp;
+                            <i class="fa fa-map-marker baseinfo-pixel-span"></i>
+                            &nbsp;
+                            <span class="baseinfo-pixel-span"><%= lang.monitor_dashboard_baseinfo_info_location %> : </span>
+                            <span id="base-info-location-span" class="baseinfo-pixel-span">-</span>
+                            &nbsp;
+                        </div>
+                    </div>
+                    </br>
+                    <div>
+                        <center>
+                            <p style="font-size:25px;font-weight:bold;">Control</p></br>
+                            <!-- <button id="button-patch" class="btn btn-primary" data-toggle="modal" onclick="_control(this.name,'patch')"><%= lang.monitor_modal_patch_button %></button>&nbsp; &nbsp; &nbsp; -->
+                            <button id="button-update" class="btn btn-primary" data-toggle="modal" onclick="_control(this.name,'upgrade')"><%= lang.monitor_modal_upgrade_button %></button>&nbsp; &nbsp; &nbsp;
+                            <button id="button-restart" class="btn btn-primary" data-toggle="modal" onclick="_control(this.name,'restart')"><%= lang.monitor_modal_restart_button %></button>&nbsp; &nbsp; &nbsp;
+                            <button id="button-reboot" class="btn btn-primary" data-toggle="modal" onclick="_control(this.name,'reboot')"><%= lang.monitor_modal_reboot_button %></button>
+                        </center>
+                    </div>
+                </div>
+            </div>
+            <div class="tab-pane fade" id="data-chart-page">
+                <div class="panel-body">
+                    <center>
+                        <div id="search-bar-advanced-radio" class="search-bar-advanced-div btn-group" data-toggle="buttons">                   
+                            <label class="btn btn-primary active">
+                                <input type="radio" name="1h" id="search-bar-advanced-option-1h"><%= lang.monitor_dashboard_datachart_option_1h %>
+                            </label>
+                            <label class="btn btn-primary">
+                                <input type="radio" name="6h" id="search-bar-advanced-option-6h"><%= lang.monitor_dashboard_datachart_option_6h %>
+                            </label>
+                            <label class="btn btn-primary">
+                                <input type="radio" name="12h" id="search-bar-advanced-option-12h"><%= lang.monitor_dashboard_datachart_option_12h %>
+                            </label>
+                            <label class="btn btn-primary">
+                                <input type="radio" name="1d" id="search-bar-advanced-option-1d"><%= lang.monitor_dashboard_datachart_option_1d %>
+                            </label>
+                            <label class="btn btn-primary">
+                                <input type="radio" name="3d" id="search-bar-advanced-option-3d"><%= lang.monitor_dashboard_datachart_option_3d %>
+                            </label>
+                            <label class="btn btn-primary">
+                                <input type="radio" name="7d" id="search-bar-advanced-option-7d"><%= lang.monitor_dashboard_datachart_option_7d %>
+                            </label>
+                            <label class="btn btn-primary">
+                                <input type="radio" name="14d" id="search-bar-advanced-option-14d"><%= lang.monitor_dashboard_datachart_option_14d %>
+                            </label>
+                        </div> 
+                    </center>
+                         <div id="chart-div-cpu" class="chart-div row col-xs-12 col-sm-6 col-md-4 col-lg-3">
+                            <div class="panel panel-default" style="height:100%;width:100%;">                           
+                                <div class="panel-heading">
+                                    <center>
+                                        <span id="cpu_chart_title_span"><%= lang.monitor_dashboard_cpu_title %></span>
+                                        <span id="cpu_chart_period_span"></span>
+                                        <span id="cpu_chart_method_span"></span>
+                                    </center>
+                                </div>                              
+                                <div id="cpu-chart-div" class="panel-body" style="height:90%;width:100%;"> &nbsp; </div>
+                            </div>
+                        </div>
+                        <div id="chart-div-mem" class="chart-div row col-xs-12 col-sm-6 col-md-4 col-lg-3">
+                            <div class="panel panel-default" style="height:100%;width:100%;">
+                                <div class="panel-heading">
+                                    <center>
+                                        <span id="mem_chart_title_span"><%= lang.monitor_dashboard_mem_title %></span>
+                                        <span id="mem_chart_period_span"></span>
+                                        <span id="mem_chart_method_span"></span>
+                                    </center>
+                                </div>
+                                <div id="mem-chart-div" class="panel-body" style="height:90%;width:100%;"> &nbsp; </div>
+                            </div>
+                        </div>
+                        <div id="chart-div-net-tx" class="chart-div row col-xs-12 col-sm-6 col-md-4 col-lg-3">
+                            <div class="panel panel-default" style="height:100%;width:100%;">
+                                <div class="panel-heading">
+                                    <center>
+                                        <span id="tx_chart_title_span"><%= lang.monitor_dashboard_tx_title %></span>
+                                        <span id="tx_chart_period_span"></span>
+                                        <span id="tx_chart_method_span"></span>
+                                    </center>
+                                </div>
+                                <div id="net-tx-chart-div" class="panel-body" style="height:90%;width:100%;"> &nbsp; </div>
+                            </div>
+                        </div>
+                        <div id="chart-div-net-rx" class="chart-div row col-xs-12 col-sm-6 col-md-4 col-lg-3">
+                            <div class="panel panel-default" style="height:100%;width:100%;">
+                                <div class="panel-heading">
+                                    <center>
+                                        <span id="rx_chart_title_span"><%= lang.monitor_dashboard_rx_title %></span>
+                                        <span id="rx_chart_period_span"></span>
+                                        <span id="rx_chart_method_span"></span>
+                                    </center>
+                                </div>
+                                <div id="net-rx-chart-div" class="panel-body" style="height:90%;width:100%;"> &nbsp; </div>
+                            </div>
+                        </div> 
+                    <!-- </center>  -->
+                </div>
+            </div>
+        </div>
+    </div>
+     <script type="text/javascript" src="/statics/js/jquery.min.js"></script>
+    <script type="text/javascript" src="/statics/js/bootstrap.min.js"></script>
+    <script type="text/javascript" src="/statics/js/bootstrap-validator.min.js"></script>
+    <script type="text/javascript" src="/statics/js/echarts.min.js"></script>
+    <script type="text/javascript" src="/statics/js/myechart.style.config.js"></script> 
+
+    <!-- <script type="text/javascript" src="./js/jquery.min.js"></script>
+    <script type="text/javascript" src="./js/bootstrap.min.js"></script>
+    <script type="text/javascript" src="./js/bootstrap-validator.min.js"></script>
+    <script type="text/javascript" src="./js/echarts.min.js"></script>
+    <script type="text/javascript" src="./js/myechart.style.config.js"></script> -->
+
+    <script type="text/javascript" src="./js/utils.js"></script>
+    <script>
+        var id = '<%= id %>';
+        var language = {};
+        language.table_column_uptime_days       = "<%= lang.monitor_table_column_uptime_days %>";
+        language.table_column_uptime_hours      = "<%= lang.monitor_table_column_uptime_hours %>";
+        language.table_column_uptime_minutes    = "<%= lang.monitor_table_column_uptime_minutes %>";
+        language.table_column_uptime_seconds    = "<%= lang.monitor_table_column_uptime_seconds %>";
+        var datas = {};
+        var data_num = 0;
+        var chart_request_state = 0;
+        var mem_total = 0;
+        var search_mode = '1h';
+        function page_panel_change_class(This){
+            $(This).parent().parent().addClass('panel panel-info');
+            $(This).parent().parent().parent().siblings("li").children().removeClass('panel panel-info');
+        }
+        function init_charts(){
+            // console.log(datas);
+            if(datas.cpu && datas.cpu.length > 0){
+                $('#chart-div-cpu').css('display','inline-block');
+                var cpu_chart = echarts.init(document.getElementById('cpu-chart-div'));
+                var data = datas.cpu;
+                var dateList = data.map(function (item) {
+                    return item[0];
+                });
+                var valueList = data.map(function (item) {
+                    return item[1];
+                });
+                var option = styleConf;
+                option.xAxis[0].data=dateList;
+                option.series[0].data=valueList;
+                cpu_chart.setOption(option);
+            }
+            if(datas.mem_used && datas.mem_used.length > 0){
+            // if(datas.mem_used && datas.mem_used.length > 0 && datas.mem_total && datas.mem_total != 0){
+                $('#chart-div-mem').css('display','inline-block');
+                var mem_chart = echarts.init(document.getElementById('mem-chart-div'));
+                for(var i in datas.mem_used){
+                    datas.mem_used[i].value = parseInt(datas.mem_used[i].value * 100 / datas.mem_total);
+                }
+                var data = datas.mem_used;
+                var dateList = data.map(function (item) {
+                    return item[0];
+                });
+                var valueList = data.map(function (item) {
+                    return item[1];
+                });
+                var option = styleConf;
+                option.xAxis[0].data=dateList;
+                option.series[0].data=valueList;
+                mem_chart.setOption(option);
+            }
+            if(datas.net_tx && datas.net_tx.length > 0){
+                $('#chart-div-net-tx').css('display','inline-block');
+                var tx_chart = echarts.init(document.getElementById('net-tx-chart-div'));
+                var data = datas.net_tx;
+                var dateList = data.map(function (item) {
+                    return item[0];
+                });
+                var valueList = data.map(function (item) {
+                    return item[1];
+                });
+                var option = styleConf;
+                option.xAxis[0].data=dateList;
+                option.series[0].data=valueList;
+                tx_chart.setOption(option);
+            }
+            if(datas.net_rx && datas.net_rx.length > 0){
+                $('#chart-div-net-rx').css('display','inline-block');
+                var rx_chart = echarts.init(document.getElementById('net-rx-chart-div'));
+                var data = datas.net_rx;
+                var dateList = data.map(function (item) {
+                    return item[0];
+                });
+                var valueList = data.map(function (item) {
+                    return item[1];
+                });
+                var option = styleConf;
+                option.xAxis[0].data=dateList;
+                option.series[0].data=valueList;
+                rx_chart.setOption(option);
+            }
+        }
+        function send_message(message){
+            var data = {id:id, message:message};
+            $.post('./device/single_control', data, function (data) {
+                if(data.result == 0){
+                    window.alert('消息已发出，请耐心等候');
+                    console.log('send message success');
+                }else if(data.result == 1){
+                    window.alert('没有相关权限');
+                    console.log('send message fail, no power');
+                }else if(data.result == -1){
+                    window.alert('操作失败,缺少相关参数');
+                    console.log('send message fail, no params');
+                }
+                else{
+                    console.log('send message fail, no login');
+                    parent.location.reload();
+                }
+            })
+        }
+        function request_chart_data(){
+            data_num = 0;
+            $.get('./api/data_streams_group?search_id=' + id + '&search_sname=cpu_usage&search_mode=' + search_mode + '&page_num=1&page_size=1000&sort_by=time&sort=asc', function (result, status) {
+                if(result.result == 0){
+                    datas.cpu = [];
+                    if(result.rows.length > 0){
+                        if(search_mode == '1h'){
+                            for(var i in result.rows){
+                                var date = new Date(result.rows[i].at).toLocaleString().replace(/:\d{1,2}$/,' ');
+                                var value = result.rows[i].value;
+                                datas.cpu.push([date, value]);  
+                            }
+                        }else{
+                            for(var i in result.rows){
+                                var date = new Date(result.rows[i].at).toLocaleString().replace(/:\d{1,2}$/,' ');
+                                var value = result.rows[i].avg;
+                                datas.cpu.push([date, value]);
+                            }
+                        }
+                    }
+                }
+                data_num++;
+                if(data_num >= 5)init_charts();
+            });
+            $.get('./api/data_streams_group?search_id=' + id + '&search_sname=mem_used&search_mode=' + search_mode + '&page_num=1&page_size=1000&sort_by=time&sort=asc', function (result, status) {
+                if(result.result == 0){
+                    datas.mem_used = [];
+                    if(result.rows.length > 0){
+                        if(search_mode == '1h'){
+                            for(var i in result.rows){
+                                var date = new Date(result.rows[i].at).toLocaleString().replace(/:\d{1,2}$/,' ');
+                                var value = parseInt(result.rows[i].value * 100 / mem_total);
+                                datas.mem_used.push([date, value]);  
+                            }
+                        }else{
+                            for(var i in result.rows){
+                                var date = new Date(result.rows[i].at).toLocaleString().replace(/:\d{1,2}$/,' ');
+                                var value = parseInt(result.rows[i].avg * 100 / mem_total);
+                                datas.mem_used.push([date, value]);
+                            }
+                        }
+                    }
+                }
+                data_num++;
+                if(data_num >= 5)init_charts();
+            });
+            $.get('./api/data_streams_group?search_id=' + id + '&search_sname=mem_total&search_mode=' + search_mode + '&page_num=1&page_size=1000&sort_by=time&sort=asc', function (result, status) {
+                if(result.result == 0){
+                    if(result.rows.length > 0){
+                        datas.mem_total = result.rows[0].value;
+                    }else{
+                        datas.mem_total = 0;
+                    }
+                }
+                data_num++;
+                if(data_num >= 5)init_charts();
+            });
+            $.get('./api/data_streams_group?search_id=' + id + '&search_sname=net_tx&search_mode=' + search_mode + '&page_num=1&page_size=1000&sort_by=time&sort=asc', function (result, status) {
+                if(result.result == 0){
+                    datas.net_tx = [];                    
+                    if(result.rows.length > 0){
+                        if(search_mode == '1h'){
+                            for(var i in result.rows){
+                                var date = new Date(result.rows[i].at).toLocaleString().replace(/:\d{1,2}$/,' ');
+                                var value = result.rows[i].value;
+                                datas.net_tx.push([date, value]);  
+                            }
+                        }else{
+                            for(var i in result.rows){
+                                var date = new Date(result.rows[i].at).toLocaleString().replace(/:\d{1,2}$/,' ');
+                                var value = result.rows[i].avg;
+                                datas.net_tx.push([date, value]);
+                            }
+                        }
+                    }
+                }
+                data_num++;
+                if(data_num >= 5)init_charts();
+            });
+            $.get('./api/data_streams_group?search_id=' + id + '&search_sname=net_rx&search_mode=' + search_mode + '&page_num=1&page_size=1000&sort_by=time&sort=asc', function (result, status) {
+                if(result.result == 0){
+                    datas.net_rx = [];
+                    if(result.rows.length > 0){
+                        if(search_mode == '1h'){
+                            for(var i in result.rows){
+                                var date = new Date(result.rows[i].at).toLocaleString().replace(/:\d{1,2}$/,' ');
+                                var value = result.rows[i].value;
+                                datas.net_rx.push([date, value]);  
+                            }
+                        }else{
+                            for(var i in result.rows){
+                                var date = new Date(result.rows[i].at).toLocaleString().replace(/:\d{1,2}$/,' ');
+                                var value = result.rows[i].avg;
+                                datas.net_rx.push([date, value]);
+                            }
+                        }
+                    }
+                }
+                data_num++;
+                if(data_num >= 5)init_charts();
+                switch(search_mode){
+                    case '1h':  $("#cpu_chart_period_span").text('');$("#cpu_chart_method_span").text('');
+                                $("#mem_chart_period_span").text('');$("#mem_chart_method_span").text('');
+                                $("#tx_chart_period_span").text('');$("#tx_chart_method_span").text('');
+                                $("#rx_chart_period_span").text('');$("#rx_chart_method_span").text('');break;
+                    case '6h':  $("#cpu_chart_period_span").text('  Period: 60s');$("#cpu_chart_method_span").text('  Method: Averag');
+                                $("#mem_chart_period_span").text('  Period: 60s');$("#mem_chart_method_span").text('  Method: Averag');
+                                $("#tx_chart_period_span").text('  Period: 60s');$("#tx_chart_method_span").text('  Method: Averag');
+                                $("#rx_chart_period_span").text('  Period: 60s');$("#rx_chart_method_span").text('  Method: Averag');break;
+                    case '12h': $("#cpu_chart_period_span").text('  Period: 90s');$("#cpu_chart_method_span").text('  Method: Averag');
+                                $("#mem_chart_period_span").text('  Period: 90s');$("#mem_chart_method_span").text('  Method: Averag');
+                                $("#tx_chart_period_span").text('  Period: 90s');$("#tx_chart_method_span").text('  Method: Averag');
+                                $("#rx_chart_period_span").text('  Period: 90s');$("#rx_chart_method_span").text('  Method: Averag');break;
+                    case '1d':  $("#cpu_chart_period_span").text('  Period: 180s');$("#cpu_chart_method_span").text('  Method: Averag');
+                                $("#mem_chart_period_span").text('  Period: 180s');$("#mem_chart_method_span").text('  Method: Averag');
+                                $("#tx_chart_period_span").text('  Period: 180s');$("#tx_chart_method_span").text('  Method: Averag');
+                                $("#rx_chart_period_span").text('  Period: 180s');$("#rx_chart_method_span").text('  Method: Averag');break;
+                    case '3d':  $("#cpu_chart_period_span").text('  Period: 540s');$("#cpu_chart_method_span").text('  Method: Averag');
+                                $("#mem_chart_period_span").text('  Period: 540s');$("#mem_chart_method_span").text('  Method: Averag');
+                                $("#tx_chart_period_span").text('  Period: 540s');$("#tx_chart_method_span").text('  Method: Averag');
+                                $("#rx_chart_period_span").text('  Period: 540s');$("#rx_chart_method_span").text('  Method: Averag');break;
+                    case '7d':  $("#cpu_chart_period_span").text('  Period: 1260s');$("#cpu_chart_method_span").text('  Method: Averag');
+                                $("#mem_chart_period_span").text('  Period: 1260s');$("#mem_chart_method_span").text('  Method: Averag');
+                                $("#tx_chart_period_span").text('  Period: 1260s');$("#tx_chart_method_span").text('  Method: Averag');
+                                $("#rx_chart_period_span").text('  Period: 1260s');$("#rx_chart_method_span").text('  Method: Averag');break;
+                    case '14d': $("#cpu_chart_period_span").text('  Period: 2520s');$("#cpu_chart_method_span").text('  Method: Averag');
+                                $("#mem_chart_period_span").text('  Period: 2520s');$("#mem_chart_method_span").text('  Method: Averag');
+                                $("#tx_chart_period_span").text('  Period: 2520s');$("#tx_chart_method_span").text('  Method: Averag');
+                                $("#rx_chart_period_span").text('  Period: 2520s');$("#rx_chart_method_span").text('  Method: Averag');break;
+                }
+            });
+            console.log(datas);
+        }
+        $(document).ready(function () {
+            $('#button-patch').click(function(){
+                send_message('patch');
+            });
+            $('#button-update').click(function(){
+                send_message('upgrade');
+            });
+            $('#button-restart').click(function(){
+                send_message('restart');
+            });
+            $('#button-reboot').click(function(){
+                send_message('reboot');
+            });
+            $('#data-chart-page-a').click(function(){
+                if(chart_request_state == 0){
+                    chart_request_state = 1;
+                    setTimeout(request_chart_data,200);
+                    // request_chart_data();
+                }
+            });
+            $('#search-bar-advanced-radio').click(function(){
+                setTimeout(function() {
+                    $('#search-bar-advanced-radio').find('input').each(function (element) {
+                        if ($(this).parent().hasClass('active')) search_mode = $(this).attr("name");
+                    });
+                    console.log(search_mode);
+                    request_chart_data()
+                }, 10);
+            });
+            //Get base information
+            $.get('./api/dashboard_base_info?id=' + id, function (result, status) {
+                if(result.result == 0){
+                    // console.log(result);
+                    mem_total = result.monitorInfo.mem_total;
+                    $.post('/device/device/info', {"id":id}, function(result1, status1){
+                        console.log(result1);
+                        if(result1.code){
+                            result1 = {};
+                            result1.name = '-';
+                            result1.location = '-';
+                        }
+                        var seconds = result.monitorInfo.uptime % 60;
+                        var minutes = parseInt((result.monitorInfo.uptime % 3600)/60);
+                        var hours = parseInt((result.monitorInfo.uptime % 86400)/3600);
+                        var days = parseInt(result.monitorInfo.uptime / 86400);
+                        if(days > 0){
+                            result.monitorInfo.uptime = (days + ' ' + language.table_column_uptime_days);
+                        }else if(hours > 0){
+                            result.monitorInfo.uptime = (hours + ' ' + language.table_column_uptime_hours);
+                        }else if(minutes > 0){
+                            result.monitorInfo.uptime = (minutes + ' ' + language.table_column_uptime_minutes);
+                        }else{
+                            result.monitorInfo.uptime = (seconds + ' ' + language.table_column_uptime_seconds);
+                        }
+                        $('#base-info-id-span').text(id);
+                        $('#base-info-name-span').text(result1.name);
+                        $('#base-info-module-span').text(result.monitorInfo.target);
+                        $('#base-info-ip-span').text(result.monitorInfo.ipaddress);
+                        $('#base-info-version-span').text(result.monitorInfo.version);
+                        $('#base-info-uptime-span').text(result.monitorInfo.uptime);
+                        $('#base-info-location-span').text(result1.location);
+                    });
+                }
+            });
+        });
+    </script>
+</body>
+
+</html>

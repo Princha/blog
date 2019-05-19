@@ -1,0 +1,13 @@
+body {
+  margin: 0;
+  padding: 0;
+  height: 100%;
+  background:#e6e8ea;
+  position:relative;
+  direction: ltr;
+  color: #4c4f53!important; 
+}
+
+.main{
+  padding: 0 0 0 240px;
+}
